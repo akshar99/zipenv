@@ -1,7 +1,7 @@
 # Import necessary modules and classes
 from fastapi import FastAPI, File, UploadFile  # FastAPI core components
 from fastapi.middleware.cors import CORSMiddleware  # CORS middleware for cross-origin requests
-from fastapi.responses import StreamingResponse  # For streaming binary responses (e.g., zip files)
+from fastapi.responses import StreamingResponse, HTMLResponse
 import zipfile  # For creating ZIP archives
 import io  # For in-memory byte stream handling
 from typing import List  # Type hints for Python < 3.9 compatibility
@@ -18,6 +18,13 @@ app.add_middleware(
     allow_methods=["*"],  # Allow all HTTP methods (GET, POST, etc.)
     allow_headers=["*"],  # Allow all headers
 )
+
+
+@app.get("/")
+def home():
+    with open('index.html', 'r') as f:
+        return HTMLResponse(f.read(), status_code=200)
+
 
 # Define the POST endpoint for zipping files
 @app.post("/zip-file/")
