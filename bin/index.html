@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zip Files</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .upload-container {
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+        .upload-container h2 {
+            text-align: center;
+        }
+        .upload-container input[type="file"] {
+            margin-bottom: 10px;
+        }
+        .upload-container button {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .upload-container button:hover {
+            background-color: #218838;
+        }
+    </style>
+</head>
+<body>
+    <div class="upload-container">
+        <h2>Upload Files to Zip</h2>
+        <input type="file" id="fileInput" multiple>
+        <button id="uploadButton">Zip and Download</button>
+    </div>
+
+    <script>
+        document.getElementById('uploadButton').addEventListener('click', async () => {
+            const fileInput = document.getElementById('fileInput');
+            const files = fileInput.files;
+
+            if (files.length === 0) {
+                alert('Please select at least one file.');
+                return;
+            }
+
+            const formData = new FormData();
+            for (const file of files) {
+                formData.append('files', file);
+            }
+
+            try {
+                const response = await fetch('http://localhost:8000/zip-file/', {
+                    method: 'POST',
+                    body: formData,
+                });
+
+                if (!response.ok) {
+                    throw new Error('Failed to zip files.');
+                }
+
+                const blob = await response.blob();
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'compressed.zip';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                window.URL.revokeObjectURL(url);
+            } catch (error) {
+                console.error('Error:', error);
+                alert('An error occurred while zipping files.');
+            }
+        });
+    </script>
+</body>
+</html>
