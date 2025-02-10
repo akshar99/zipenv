@@ -3,7 +3,7 @@
 # FastAPI Backend for Zipping Files
 
 ## Overview
-This FastAPI backend compresses multiple uploaded files into a ZIP archive and returns it for download. It avoids writing files to disk by using in-memory operations, making it efficient and secure.
+This FastAPI backend compresses multiple uploaded files into a ZIP archive and returns it for download. It avoids writing files to disk by using in-memory operations, making it efficient and secure (main.py is stored in bin).
 
 ---
 
