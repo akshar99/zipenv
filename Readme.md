@@ -1,3 +1,5 @@
+![image](https://github.com/user-attachments/assets/cbc5d48e-7585-43a0-8d43-52e4b0460153)
+
 # FastAPI Backend for Zipping Files
 
 ## Overview
